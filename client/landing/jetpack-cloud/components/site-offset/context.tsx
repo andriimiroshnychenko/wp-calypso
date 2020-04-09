@@ -35,7 +35,9 @@ const SiteOffsetProvider: FunctionComponent< Props > = ( { children, site } ) =>
 
 	const value = useCallback(
 		( input: MomentInput ) =>
-			gmtOffset || timezone ? applySiteOffset( input, { gmtOffset, timezone } ) : null,
+			gmtOffset !== null || timezone !== null
+				? applySiteOffset( input, { gmtOffset, timezone } )
+				: null,
 		[ gmtOffset, timezone ]
 	);
 
