@@ -27,7 +27,8 @@ import './style.scss';
 
 class ActivityCardList extends Component {
 	static defaultProps = {
-		showFilter: true,
+		showActivityTypeSelector: true,
+		showDateRangeSelector: true,
 		showPagination: true,
 	};
 
@@ -40,10 +41,11 @@ class ActivityCardList extends Component {
 		const {
 			allowRestore,
 			filter,
-			moment,
 			logs,
+			moment,
 			pageSize,
-			showFilter,
+			showActivityTypeSelector,
+			showDateRangeSelector,
 			showPagination,
 			siteId,
 			siteSlug,
@@ -72,7 +74,7 @@ class ActivityCardList extends Component {
 			<div className="activity-card-list">
 				<QueryRewindCapabilities siteId={ siteId } />
 				<QueryRewindState siteId={ siteId } />
-				{ showFilter && (
+				{ ( showActivityTypeSelector || showDateRangeSelector ) && (
 					<Filterbar
 						{ ...{
 							siteId,
@@ -80,6 +82,8 @@ class ActivityCardList extends Component {
 							isLoading: false,
 							isVisible: true,
 						} }
+						useActivityTypeSelector={ showActivityTypeSelector }
+						useDateRangeSelector={ showDateRangeSelector }
 					/>
 				) }
 				{ showPagination && (
