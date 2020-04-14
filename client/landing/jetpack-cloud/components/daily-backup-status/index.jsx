@@ -16,6 +16,7 @@ import { isSuccessfulBackup } from 'landing/jetpack-cloud/sections/backups/utils
 import {
 	/*backupDetailPath,*/ backupDownloadPath,
 	backupRestorePath,
+	backupMainPath,
 } from 'landing/jetpack-cloud/sections/backups/paths';
 import { applySiteOffset } from 'lib/site/timezone';
 import { Card } from '@automattic/components';
@@ -25,13 +26,15 @@ import { Card } from '@automattic/components';
  */
 import './style.scss';
 
+const INDEX_FORMAT = 'YYYYMMDD';
+
 class DailyBackupStatus extends Component {
 	triggerRestore = () => {
-		page.redirect( backupRestorePath( this.props.siteSlug, this.props.backup.rewindId ) );
+		page( backupRestorePath( this.props.siteSlug, this.props.backup.rewindId ) );
 	};
 
 	triggerDownload = () => {
-		page.redirect( backupDownloadPath( this.props.siteSlug, this.props.backup.rewindId ) );
+		page( backupDownloadPath( this.props.siteSlug, this.props.backup.rewindId ) );
 	};
 
 	goToDetailsPage() {
@@ -156,7 +159,7 @@ class DailyBackupStatus extends Component {
 	}
 
 	renderNoBackup() {
-		const { translate, selectedDate, onDateChange } = this.props;
+		const { translate, selectedDate, siteSlug } = this.props;
 
 		const displayDate = selectedDate.format( 'll' );
 		const nextDate = selectedDate.clone().add( 1, 'days' );
@@ -180,14 +183,11 @@ class DailyBackupStatus extends Component {
 							{
 								args: { displayNextDate },
 								components: {
-									//todo: href need implementation and add the correct query
 									link: (
 										<a
-											href="?date="
-											onClick={ event => {
-												event.preventDefault();
-												onDateChange( nextDate );
-											} }
+											href={ backupMainPath( siteSlug, {
+												date: nextDate.format( INDEX_FORMAT ),
+											} ) }
 										/>
 									),
 								},
@@ -210,7 +210,7 @@ class DailyBackupStatus extends Component {
 	}
 
 	renderNoBackupToday( lastBackupDate ) {
-		const { translate, timezone, gmtOffset, moment, onDateChange } = this.props;
+		const { translate, timezone, gmtOffset, moment, siteSlug } = this.props;
 
 		const today = applySiteOffset( moment(), {
 			timezone: timezone,
@@ -244,14 +244,11 @@ class DailyBackupStatus extends Component {
 					{ translate( 'Last daily backup: {{link}}%(lastBackupDay)s %(lastBackupTime)s{{/link}}', {
 						args: { lastBackupDay, lastBackupTime },
 						components: {
-							//todo: href need implementation and add the correct query
 							link: (
 								<a
-									href="?date="
-									onClick={ event => {
-										event.preventDefault();
-										onDateChange( lastBackupDate );
-									} }
+									href={ backupMainPath( siteSlug, {
+										date: lastBackupDate.format( INDEX_FORMAT ),
+									} ) }
 								/>
 							),
 						},

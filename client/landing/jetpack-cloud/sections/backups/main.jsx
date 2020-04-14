@@ -229,7 +229,6 @@ class BackupsPage extends Component {
 							selectedDate={ this.getSelectedDate() }
 							timezone={ timezone }
 							gmtOffset={ gmtOffset }
-							onDateChange={ this.onDateChange }
 						/>
 						{ doesRewindNeedCredentials && (
 							<MissingCredentialsWarning settingsLink={ `/settings/${ siteSlug }` } />
