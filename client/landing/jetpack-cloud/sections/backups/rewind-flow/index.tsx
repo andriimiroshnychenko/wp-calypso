@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 /**
  * Internal dependencies
  */
-import { Card } from '@automattic/components';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { getSiteSlug } from 'state/sites/selectors';
 import { RewindFlowPurpose } from './types';
@@ -73,7 +72,7 @@ const BackupRewindFlow: FunctionComponent< Props > = ( { rewindId, purpose } ) =
 				}
 			/>
 			<SidebarNavigation />
-			<Card>{ render() }</Card>
+			<div className="rewind-flow__content">{ render() }</div>
 		</Main>
 	);
 };
