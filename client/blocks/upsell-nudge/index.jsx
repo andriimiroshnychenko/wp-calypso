@@ -60,7 +60,17 @@ export const UpsellNudge = ( {
 		href = addQueryArgs( { feature, plan }, `/plans/${ site.slug }` );
 	}
 
-	return <Banner { ...props } showIcon={ showIcon } className={ classes } href={ href } />;
+	return (
+		<Banner
+			{ ...props }
+			className={ classes }
+			showIcon={ showIcon }
+			jetpack={ isJetpack }
+			feature={ feature }
+			plan={ plan }
+			href={ href }
+		/>
+	);
 };
 
 export default connect( ( state, ownProps ) => {
