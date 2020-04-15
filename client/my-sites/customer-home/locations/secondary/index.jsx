@@ -19,6 +19,7 @@ const cardComponents = {
 	'home-education-free-photo-library': FreePhotoLibrary,
 	'home-feature-go-mobile-desktop': GoMobile,
 	'home-feature-grow-and-earn': GrowEarn,
+	'home-feature-quick-start': QuickStart,
 	'home-feature-stats': Stats,
 	'home-feature-support': Support,
 };
@@ -26,7 +27,6 @@ const cardComponents = {
 const Secondary = ( { cards } ) => {
 	return (
 		<>
-			<QuickStartCard />
 			{ cards &&
 				cards.map(
 					( card, index ) =>
