@@ -228,6 +228,10 @@ function sendFailureNotif( slackClient, reportDir, testRun ) {
 				`Error reading report file, likely just timing race: ${ e.message }; ${ reportDir }; ${ reportPath }`
 			);
 			console.log( e.stack );
+			console.log(
+				`xml report file size = ${ fs.statSync( `${ reportDir }/${ reportPath }` ).size } bytes`
+			);
+			console.log( fs.readFileSync( `${ reportDir }/${ reportPath }`, 'utf-8' ) );
 		}
 		copyReports( slackClient, reportDir, reportPath, testRun.guid );
 	} );
