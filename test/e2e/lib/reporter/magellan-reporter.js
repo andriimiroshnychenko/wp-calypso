@@ -224,7 +224,10 @@ function sendFailureNotif( slackClient, reportDir, testRun ) {
 			const xmlData = XunitViewerParser.parse( xmlString );
 			failuresCount += xmlData[ 0 ].tests.filter( t => t.status === 'fail' ).length;
 		} catch ( e ) {
-			console.log( `Error reading report file, likely just timing race: ${ e.message }` );
+			console.log(
+				`Error reading report file, likely just timing race: ${ e.message }; ${ reportDir }; ${ reportPath }`
+			);
+			console.log( e.stack );
 		}
 		copyReports( slackClient, reportDir, reportPath, testRun.guid );
 	} );
