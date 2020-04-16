@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import { Button, Panel, PanelBody, PanelRow, TextControl, Icon } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { times } from 'lodash';
@@ -23,6 +23,7 @@ import {
 import CloseButton from '../close-button';
 import { useDomainSuggestions } from '../../hooks/use-domain-suggestions';
 import { PAID_DOMAINS_TO_SHOW } from '../../constants';
+import { getNewRailcarId } from '../../utils/analytics';
 
 /**
  * Style dependencies
@@ -84,6 +85,12 @@ const DomainPicker: FunctionComponent< Props > = ( { onDomainSelect, onClose, cu
 	);
 	const recommendedSuggestion = getRecommendedDomainSuggestion( paidSuggestions );
 
+	const [ railcarId, setRailcarId ] = useState( getNewRailcarId() );
+
+	useEffect( () => {
+		setRailcarId( getNewRailcarId() );
+	}, [ domainSearch ] );
+
 	return (
 		<Panel className="domain-picker">
 			<PanelBody>
@@ -119,6 +126,8 @@ const DomainPicker: FunctionComponent< Props > = ( { onDomainSelect, onClose, cu
 									suggestion={ freeSuggestions[ 0 ] }
 									isSelected={ currentDomain?.domain_name === freeSuggestions[ 0 ].domain_name }
 									onSelect={ onDomainSelect }
+									railcarId={ `${ railcarId }0` }
+									uiPosition={ 0 }
 								/>
 							) : (
 								<SuggestionNone />
@@ -127,13 +136,15 @@ const DomainPicker: FunctionComponent< Props > = ( { onDomainSelect, onClose, cu
 							times( PAID_DOMAINS_TO_SHOW - 1, i => <SuggestionItemPlaceholder key={ i } /> ) }
 						{ paidSuggestions &&
 							( paidSuggestions?.length ? (
-								paidSuggestions.map( suggestion => (
+								paidSuggestions.map( ( suggestion, i ) => (
 									<SuggestionItem
 										suggestion={ suggestion }
 										isRecommended={ suggestion === recommendedSuggestion }
 										isSelected={ currentDomain?.domain_name === suggestion.domain_name }
 										onSelect={ onDomainSelect }
 										key={ suggestion.domain_name }
+										railcarId={ `${ railcarId }${ i + 1 }` }
+										uiPosition={ i + 1 }
 									/>
 								) )
 							) : (
